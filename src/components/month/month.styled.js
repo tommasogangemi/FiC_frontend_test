@@ -4,6 +4,7 @@ export const MonthContainer = styled.div`
 	border: 1px solid #ebedee;
 	border-left: none;
 	border-bottom: none;
+	cursor: pointer;
 
 	&:first-child {
 		border-left: 1px solid #ebedee;
@@ -34,7 +35,8 @@ export const MonthNameContainer = styled.div`
 export const MonthPreview = styled.div`
 	height: 75px;
 	margin-top: 4px;
-	border-bottom: 2px solid #0d97d5;
+	border-bottom: ${props =>
+		props.selected ? '4px solid #00875A' : '2px solid #0d97d5'};
 	position: relative;
 
 	.data-container {

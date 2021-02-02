@@ -7,20 +7,24 @@ import { CalendarContainer } from './calendar.styled';
 const Calendar = () => {
 	const [monthsData, setMonthsData] = useState([]);
 
-	useEffect(() => {
-		const fetchFunction = async () => {
+	const fetchFunction = async () => {
+		try {
 			const apiRes = await fetch(
 				'http://staccah.fattureincloud.it/testfrontend/data.json'
 			);
 			const apiData = await apiRes.json();
 			const formattedArray = apiData.mesi.map((itm, idx) => ({
 				...itm,
-				nome: MONTH_NAMES[idx],
+				name: MONTH_NAMES[idx],
 				isSelected: false,
 			}));
 			setMonthsData(formattedArray);
-		};
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
+	useEffect(() => {
 		fetchFunction();
 	}, []);
 
@@ -35,22 +39,27 @@ const Calendar = () => {
 		return ((importo / highestTotal) * 100).toFixed();
 	};
 
-	// const refreshSelection = () => {
-	// 	const refreshedState = monthsData.map(itm => ({
-	// 		...itm,
-	// 		isSelected: false,
-	// 	}));
-	// 	setMonthsData(refreshedState);
-	// };
+	const selectMonth = month => {
+		const setSelectedItem = monthsData.map(itm => {
+			if (itm.name === month && itm.isSelected === true) {
+				return { ...itm, isSelected: false };
+			} else if (itm.name === month) {
+				return { ...itm, isSelected: true };
+			} else {
+				return { ...itm, isSelected: false };
+			}
+		});
+		setMonthsData(setSelectedItem);
+	};
 
 	return (
 		<CalendarContainer>
 			{monthsData.map(month => (
 				<Month
-					key={month.nome}
+					key={month.name}
 					month={month}
 					percentage={calculatePercentage(month.importo)}
-					// refreshSelection={refreshSelection}
+					selectMonth={selectMonth}
 				/>
 			))}
 		</CalendarContainer>

@@ -4,15 +4,19 @@ import {
 	MonthPreview,
 } from './month.styled.js';
 
-const Month = ({ month, percentage }) => {
-	const { nome, importo, documenti } = month;
+const Month = ({ month, percentage, selectMonth }) => {
+	const { name, importo, documenti, isSelected } = month;
+
+	const handleClick = () => {
+		selectMonth(name);
+	};
 
 	return (
-		<MonthContainer>
+		<MonthContainer onClick={handleClick}>
 			<MonthNameContainer>
-				<span>{nome}</span>
+				<span>{name}</span>
 			</MonthNameContainer>
-			<MonthPreview percentage={percentage}>
+			<MonthPreview percentage={percentage} selected={isSelected}>
 				<div className='data-container'>
 					<span className='docs'>{documenti} doc.</span>
 					<span className='total'>{importo} €</span>
