@@ -2,7 +2,12 @@ import styled from 'styled-components';
 
 export const MonthContainer = styled.div`
 	border: 1px solid #ebedee;
+	border-left: none;
 	border-bottom: none;
+
+	&:first-child {
+		border-left: 1px solid #ebedee;
+	}
 `;
 
 export const MonthNameContainer = styled.div`
@@ -27,16 +32,44 @@ export const MonthNameContainer = styled.div`
 `;
 
 export const MonthPreview = styled.div`
-	height: 79px;
+	height: 75px;
+	margin-top: 4px;
 	border-bottom: 2px solid #0d97d5;
 	position: relative;
 
+	.data-container {
+		position: absolute;
+		left: 8px;
+		right: 8px;
+		bottom: 7px;
+
+		.docs,
+		.total {
+			font-family: Inter;
+			font-size: 12px;
+			line-height: 18px;
+			display: flex;
+			align-items: center;
+		}
+
+		.docs {
+			font-weight: 400;
+			color: #6f7e86;
+		}
+
+		.total {
+			font-weight: 500;
+			color: #00875a;
+		}
+	}
+
 	.background {
+		z-index: -1;
 		background: #e0f1eb;
 		position: absolute;
 		left: 0px;
 		right: 0px;
 		bottom: 0px;
-		height: 80%;
+		height: ${props => props.percentage}%;
 	}
 `;
