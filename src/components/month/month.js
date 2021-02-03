@@ -12,11 +12,11 @@ const Month = ({ month, percentage, selectMonth }) => {
 	};
 
 	return (
-		<MonthContainer onClick={handleClick}>
+		<MonthContainer onClick={handleClick} selected={isSelected}>
 			<MonthNameContainer>
 				<span>{name}</span>
 			</MonthNameContainer>
-			<MonthPreview percentage={percentage} selected={isSelected}>
+			<MonthPreview percentage={percentage}>
 				<div className='data-container'>
 					<span className='docs'>{documenti} doc.</span>
 					<span className='total'>{importo} €</span>
@@ -24,6 +24,7 @@ const Month = ({ month, percentage, selectMonth }) => {
 
 				<div className='background'></div>
 			</MonthPreview>
+			<div className='selectBar'></div>
 		</MonthContainer>
 	);
 };

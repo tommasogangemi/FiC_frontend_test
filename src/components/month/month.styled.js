@@ -9,6 +9,13 @@ export const MonthContainer = styled.div`
 	&:first-child {
 		border-left: 1px solid #ebedee;
 	}
+
+	.selectBar {
+		width: 100%;
+		height: 4px;
+		background: #24a703;
+		display: ${props => (props.selected ? 'block' : 'none')};
+	}
 `;
 
 export const MonthNameContainer = styled.div`

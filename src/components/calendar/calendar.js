@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-
 import Month from '../month/month';
+
 import { MONTH_NAMES } from '../../CALENDAR_DATA';
-import { CalendarContainer } from './calendar.styled';
+
+import { CalendarContainer, MonthsDisplay } from './calendar.styled';
 
 const Calendar = () => {
 	const [monthsData, setMonthsData] = useState([]);
+	const [monthsToDisplay, setMonthsToDisplay] = useState([]);
 
 	const fetchFunction = async () => {
 		try {
@@ -28,6 +30,24 @@ const Calendar = () => {
 		fetchFunction();
 	}, []);
 
+	useEffect(() => {
+		const monthSelection = monthsData.filter(itm => itm.isSelected === true);
+		setMonthsToDisplay(monthSelection);
+	}, [monthsData]);
+
+	const selectMonth = month => {
+		const setSelectedItem = monthsData.map(itm => {
+			if (itm.name === month) {
+				const opposite = !itm.isSelected;
+				return { ...itm, isSelected: opposite };
+			} else {
+				return { ...itm };
+			}
+		});
+
+		setMonthsData(setSelectedItem);
+	};
+
 	const highestTotal = monthsData.reduce((acc, itm) => {
 		if (itm.importo > acc) {
 			acc = itm.importo;
@@ -39,30 +59,28 @@ const Calendar = () => {
 		return ((importo / highestTotal) * 100).toFixed();
 	};
 
-	const selectMonth = month => {
-		const setSelectedItem = monthsData.map(itm => {
-			if (itm.name === month && itm.isSelected === true) {
-				return { ...itm, isSelected: false };
-			} else if (itm.name === month) {
-				return { ...itm, isSelected: true };
-			} else {
-				return { ...itm, isSelected: false };
-			}
-		});
-		setMonthsData(setSelectedItem);
-	};
-
 	return (
-		<CalendarContainer>
-			{monthsData.map(month => (
-				<Month
-					key={month.name}
-					month={month}
-					percentage={calculatePercentage(month.importo)}
-					selectMonth={selectMonth}
-				/>
-			))}
-		</CalendarContainer>
+		<div>
+			<CalendarContainer>
+				{monthsData.map(month => (
+					<Month
+						key={month.name}
+						month={month}
+						percentage={calculatePercentage(month.importo)}
+						selectMonth={selectMonth}
+					/>
+				))}
+			</CalendarContainer>
+			<MonthsDisplay>
+				{monthsToDisplay.map(({ name, importo, documenti }) => (
+					<div key={name}>
+						<h2>{name}</h2>
+						<div>{documenti} doc.</div>
+						<div>{importo} €</div>
+					</div>
+				))}
+			</MonthsDisplay>
+		</div>
 	);
 };
 
